@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/wordpress?useSSL=false&serverTimezone=UTC
-    username: user
-    password: 12345
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
   jpa:
     properties:
       hibernate:
