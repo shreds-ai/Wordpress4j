@@ -9,12 +9,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -24,9 +21,6 @@ public class TagRepositoryImplTests {
 
     @Mock
     private TagRepositoryPort tagRepository;
-
-    @Mock
-    private EntityManager entityManager;
 
     @BeforeEach
     public void setUp() {

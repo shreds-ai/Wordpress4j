@@ -1,7 +1,6 @@
 package com.wordpressclone.tags.domain.ports;
 
 import com.wordpressclone.tags.application.dtos.TagDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.wordpressclone.tags.domain.exceptions.TagNotFoundException;
 
 /**
@@ -20,12 +19,7 @@ public interface TagServicePort {
      * @throws TagNotFoundException if the tag cannot be found
      * @throws IllegalArgumentException if name is null or empty
      */
-    default TagDTO retrieveTagByName(String name) throws TagNotFoundException, IllegalArgumentException {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Tag name cannot be null or empty");
-        }
-        return retrieveTagByName(name);
-    }
+    TagDTO retrieveTagByName(String name) throws TagNotFoundException, IllegalArgumentException;
 
     /**
      * Validates the tag name to ensure it is not null or empty.

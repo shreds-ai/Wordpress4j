@@ -15,17 +15,18 @@ import java.util.Optional;
 @Service
 public class TagService {
 
-    private final TagRepositoryPort tagRepository, Logger logger = LoggerFactory.getLogger(TagService.class);
+    private final TagRepositoryPort tagRepositoryPort;
+    private static final Logger logger = LoggerFactory.getLogger(TagService.class);
 
-    public TagService(TagRepositoryPort tagRepository) {
-        this.tagRepository = tagRepository;
+    public TagService(TagRepositoryPort tagRepositoryPort) {
+        this.tagRepositoryPort = tagRepositoryoPort;
     }
 
     @Transactional(readOnly = true)
     public List<TagEntity> retrieveAllTags() throws DataAccessException {
         logger.info("Retrieving all tags");
         try {
-            return tagRepository.findAllTags();
+            return tagRepositoryPort.findAllTags();
         } catch (DataAccessException e) {
             logger.error("Failed to retrieve all tags", e);
             throw e;
@@ -35,7 +36,7 @@ public class TagService {
     @Transactional
     public TagEntity retrieveTagById(Long id) throws DataAccessException, TagNotFoundException {
         logger.info("Retrieving tag by ID: {}", id);
-        Optional<TagEntity> result = tagRepository.findTagById(id);
+        Optional<TagEntity> result = tagRepositoryPort.findTagById(id);
         if (result.isPresent()) {
             return result.get();
         } else {
@@ -47,7 +48,7 @@ public class TagService {
     @Transactional
     public TagEntity retrieveTagByName(String name) throws DataAccessException, TagNotFoundException {
         logger.info("Retrieving tag by name: {}", name);
-        Optional<TagEntity> result = tagRepository.findTagByName(name);
+        Optional<TagEntity> result = tagRepositoryPort.findTagByName(name);
         if (result.isPresent()) {
             return result.get();
         } else {

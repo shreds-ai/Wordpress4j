@@ -2,6 +2,7 @@ package com.wordpressclone.tags.application.use_cases;
 
 import com.wordpressclone.tags.domain.services.TagService;
 import com.wordpressclone.tags.application.dtos.TagDTO;
+import com.wordpressclone.tags.domain.entities.TagEntity;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.dao.DataAccessException;
@@ -29,10 +30,10 @@ public class RetrieveTagsUseCase {
 
     public List<TagDTO> retrieveAllTags() {
         try {
-            List<TagDTO> tags = tagService.retrieveAllTags().stream()
+            List<TagEntity> tagEntities = tagService.retrieveAllTags();
+            return tagEntities.stream()
                 .map(tagEntity -> new TagDTO(tagEntity.getId(), validateInput(tagEntity.getName()), tagEntity.getSlug(), tagEntity.getDescription(), tagEntity.getCount()))
                 .collect(Collectors.toList());
-            return tags;
         } catch (DataAccessException e) {
             logger.error("Data access exception occurred while retrieving all tags", e);
             throw e;
@@ -40,7 +41,9 @@ public class RetrieveTagsUseCase {
     }
 
     private String validateInput(@NotNull String input) {
-        // Add validation logic here
+        if (input == null || input.trim().isEmpty()) {
+            throw new IllegalArgumentException("Input cannot be null or empty.");
+        }
         return input.trim();
     }
 }
