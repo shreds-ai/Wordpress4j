@@ -1,8 +1,8 @@
 package com.wordpressclone.tags.application.ports;
 
 import com.wordpressclone.tags.application.dtos.TagDTO;
-import com.wordpressclone.tags.application.exceptions.TagNotFoundException;
-import com.wordpressclone.tags.application.exceptions.TagValidationException;
+import com.wordpressclone.tags.domain.exceptions.TagNotFoundException;
+import com.wordpressclone.tags.domain.exceptions.TagValidationException;
 
 /**
  * Interface for input operations related to managing tags within the application.

@@ -27,9 +27,9 @@ public class TagEntity {
     @Column(name = "count")
     private int postCount;
 
-    @Autowired
     private final TagRepositoryPort tagRepositoryPort;
 
+    @Autowired
     public TagEntity(TagRepositoryPort tagRepositoryPort) {
         this.tagRepositoryPort = tagRepositoryPort;
     }

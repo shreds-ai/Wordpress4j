@@ -6,6 +6,7 @@ import com.wordpressclone.tags.application.dtos.TagDTO;
 import com.wordpressclone.tags.domain.entities.TagEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class RetrieveTagByIdUseCase {
 
@@ -16,10 +17,11 @@ public class RetrieveTagByIdUseCase {
         this.tagService = tagService;
     }
 
-    public TagDTO execute(Long tagId) throws TagNotFoundException {
+    public TagDTO execute(Long tagId) throws TagNotFoundException, JsonProcessingException {
         validateTagId(tagId);
         logger.info("Executing tag retrieval for ID: {}", tagId);
-        TagDTO tag = TagDTO.fromEntity(tagService.retrieveTagById(tagId));
+        TagEntity tagEntity = tagService.retrieveTagById(tagId);
+        TagDTO tag = TagDTO.fromJson(tagEntity.toJson());
         logger.info("Retrieved tag details: {}", tag);
         return tag;
     }

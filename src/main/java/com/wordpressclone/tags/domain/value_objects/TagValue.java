@@ -2,16 +2,18 @@ package com.wordpressclone.tags.domain.value_objects;
 
 import java.io.Serializable;
 import lombok.Data;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class TagValue implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty("name")
     private String name;
-
-    @JsonProperty("slug")
     private String slug;
 }

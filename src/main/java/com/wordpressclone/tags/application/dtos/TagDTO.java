@@ -27,7 +27,7 @@ public class TagDTO implements TagDTOInterface {
     @NotNull
     private Integer count;
 
-    public String toJson() {
+    public String toJson() throws RuntimeException {
         validateTagData();
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -37,7 +37,7 @@ public class TagDTO implements TagDTOInterface {
         }
     }
 
-    public static TagDTO fromJson(String json) {
+    public static TagDTO fromJson(String json) throws RuntimeException {
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.readValue(json, TagDTO.class);
@@ -47,8 +47,10 @@ public class TagDTO implements TagDTOInterface {
     }
 
     private void validateTagData() {
-        if (id == null || name == null || slug == null || description == null || count == null) {
-            throw new IllegalStateException("Tag data is not properly set.");
-        }
+        if (id == null) throw new IllegalStateException("Tag ID is not set.");
+        if (name == null) throw new IllegalStateException("Tag name is not set.");
+        if (slug == null) throw new IllegalStateException("Tag slug is not set.");
+        if (description == null) throw new IllegalStateException("Tag description is not set.");
+        if (count == null) throw new IllegalStateException("Tag count is not set.");
     }
 }
