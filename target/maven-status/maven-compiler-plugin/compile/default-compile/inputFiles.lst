@@ -1,0 +1,16 @@
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\application\use_cases\RetrieveTagsUseCase.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\application\use_cases\RetrieveTagByIdUseCase.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\domain\entities\TagEntity.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\domain\services\TagService.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\domain\ports\TagServicePort.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\application\ports\TagOutputPort.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\application\dtos\TagDTO.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\domain\exceptions\TagNotFoundException.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\adapters\exceptions\GlobalExceptionHandler.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\adapters\secondary\TagOutputAdapter.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\adapters\primary\TagController.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\ai\shreds\wordpress4j\Wordpress4jApplication.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\adapters\secondary\TagRepositoryImpl.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\domain\ports\TagRepositoryPort.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\application\use_cases\RetrieveTagByNameUseCase.java
+C:\Users\fouad\IdeaProjects\tmp\wordpress4jg5o3j\src\main\java\com\wordpressclone\tags\configurations\ConfigurationProperties.java
