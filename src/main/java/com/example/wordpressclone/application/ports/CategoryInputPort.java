@@ -2,7 +2,7 @@ package com.example.wordpressclone.application.ports;
 
 import com.example.wordpressclone.application.dtos.CategoryDTO;
 import com.example.wordpressclone.application.exceptions.DataValidationException;
-import com.example.wordpressclone.application.exceptions.CategoryNotFoundException;
+import com.example.wordpressclone.domain.exceptions.CategoryNotFoundException;
 
 /**
  * Interface defining the operations for managing categories in the application.
@@ -26,12 +26,4 @@ public interface CategoryInputPort {
      * @return the updated category DTO
      * @throws CategoryNotFoundException if the category does not exist
      */
-    CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO) throws CategoryNotFoundException;
-
-    /**
-     * Deletes a category identified by its categoryId.
-     * @param categoryId the ID of the category to be deleted
-     * @throws CategoryNotFoundException if the category does not exist
-     */
-    void deleteCategory(Long categoryId) throws CategoryNotFoundException;
-}
+    CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO) throws Category...

@@ -2,12 +2,10 @@ package com.example.wordpressclone.application.dtos;
 
 import lombok.Data;
 import lombok.AllArgsConstructor;
-import com.example.wordpressclone.application.dtos.CategoryDTO;
-import com.example.wordpressclone.application.ports.CategoryDataTransformer;
 
 @Data
 @AllArgsConstructor
-public class CategoryResponseDTO implements CategoryDataTransformer {
+public class CategoryResponseDTO {
     private Long id;
     private String name;
     private String slug;
@@ -15,8 +13,7 @@ public class CategoryResponseDTO implements CategoryDataTransformer {
     private Long parentId;
     private int postCount;
 
-    @Override
-    public CategoryResponseDTO transform(CategoryDTO categoryDTO) {
+    public static CategoryResponseDTO convertFromCategoryDTO(CategoryDTO categoryDTO) {
         if (categoryDTO == null) {
             throw new IllegalArgumentException("CategoryDTO cannot be null");
         }

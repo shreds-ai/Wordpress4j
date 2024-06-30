@@ -1,11 +1,10 @@
 package com.example.wordpressclone.domain.services;
 
-import com.example.wordpressclone.domain.entities.Category;
+import com.example.wordpressclone.domain.entities.CategoryEntity;
 import com.example.wordpressclone.domain.exceptions.CategoryNotFoundException;
 import com.example.wordpressclone.domain.ports.CategoryRepositoryPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -23,7 +22,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public List<Category> retrieveAllCategories() {
+    public List<CategoryEntity> retrieveAllCategories() {
         return categoryRepositoryPort.findAllCategories()
                 .stream()
                 .map(this::convertToDomain)
@@ -31,22 +30,22 @@ public class CategoryService {
     }
 
     @Transactional
-    public Category retrieveCategoryById(Long categoryId) {
-        Optional<Category> category = categoryRepositoryPort.findCategoryById(categoryId)
+    public CategoryEntity retrieveCategoryById(Long categoryId) throws CategoryNotFoundException {
+        Optional<CategoryEntity> category = categoryRepositoryPort.findCategoryById(categoryId)
                 .map(this::convertToDomain);
         return category.orElseThrow(() -> new CategoryNotFoundException("Category not found"));
     }
 
     @Transactional
-    public List<Category> retrieveCategoryByName(String categoryName) {
+    public List<CategoryEntity> retrieveCategoryByName(String categoryName) throws CategoryNotFoundException {
         return categoryRepositoryPort.findCategoryByName(categoryName)
                 .stream()
                 .map(this::convertToDomain)
                 .collect(Collectors.toList());
     }
 
-    private Category convertToDomain(Category categoryEntity) {
-        Category category = new Category();
+    private CategoryEntity convertToDomain(CategoryEntity categoryEntity) {
+        CategoryEntity category = new CategoryEntity();
         category.setId(categoryEntity.getId());
         category.setName(categoryEntity.getName());
         category.setSlug(categoryEntity.getSlug());

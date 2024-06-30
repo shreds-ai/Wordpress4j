@@ -4,7 +4,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import com.example.wordpressclone.application.exceptions.DataAccessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.wordpressclone.domain.exceptions.CategoryNotFoundException;
@@ -17,31 +18,25 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<Object> handleCategoryNotFoundException(CategoryNotFoundException ex, WebRequest request) {
         logger.error("Category not found exception: " + ex.getMessage() + " at " + request.getDescription(false), ex);
-        return ResponseEntity.status(404).body(ErrorResponseFactory.create("Category not found", ex.getMessage(), System.currentTimeMillis()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Category not found", ex.getMessage(), System.currentTimeMillis()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception ex, WebRequest request) {
         logger.error("General exception: " + ex.getMessage() + " at " + request.getDescription(false), ex);
-        return ResponseEntity.status(500).body(ErrorResponseFactory.create("Internal server error", ex.getMessage(), System.currentTimeMillis()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("Internal server error", ex.getMessage(), System.currentTimeMillis()));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
         logger.error("Illegal argument exception: " + ex.getMessage() + " at " + request.getDescription(false), ex);
-        return ResponseEntity.status(400).body(ErrorResponseFactory.create("Bad request", ex.getMessage(), System.currentTimeMillis()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Bad request", ex.getMessage(), System.currentTimeMillis()));
     }
 
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<Object> handleDataAccessException(DataAccessException ex, WebRequest request) {
         logger.error("Database access exception: " + ex.getMessage() + " at " + request.getDescription(false), ex);
-        return ResponseEntity.status(500).body(ErrorResponseFactory.create("Database error", ex.getMessage(), System.currentTimeMillis()));
-    }
-}
-
-interface ErrorResponseFactory {
-    static ErrorResponse create(String error, String message, long timestamp) {
-        return new ErrorResponse(error, message, timestamp);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("Database error", ex.getMessage(), System.currentTimeMillis()));
     }
 }
 

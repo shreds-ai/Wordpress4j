@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.http.ResponseEntity;
 import javax.validation.Valid;
 import java.util.List;
@@ -17,9 +16,9 @@ import org.slf4j.LoggerFactory;
 import com.example.wordpressclone.application.services.CategoryApplicationService;
 import com.example.wordpressclone.application.dtos.CategoryDTO;
 import com.example.wordpressclone.domain.exceptions.CategoryNotFoundException;
+import com.example.wordpressclone.adapters.exceptions.ErrorResponse;
 
 @RestController
-@ControllerAdvice
 public class CategoryController {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
@@ -44,7 +43,7 @@ public class CategoryController {
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
         try {
             logger.info("Fetching category by ID: {}", id);
-            return ResponseEntity.ok(categoryApplicationService.retrieveCategoryById(id));
+            return ResponseEntity.ok(categoryApplicationManager.retrieveCategoryById(id));
         } catch (CategoryNotFoundException e) {
             logger.error("Category not found: {}", id, e);
             return ResponseEntity.status(404).body(new ErrorResponse("Category not found", "404"));

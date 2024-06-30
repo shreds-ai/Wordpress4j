@@ -3,21 +3,27 @@ package com.example.wordpressclone.application.dtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.example.wordpressclone.application.ports.CategoryMapper;
+import com.example.wordpressclone.domain.entities.CategoryEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDTO implements CategoryMapper {
+public class CategoryDTO {
+    @JsonProperty("id")
     private Long id;
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("slug")
     private String slug;
+    @JsonProperty("description")
     private String description;
+    @JsonProperty("parentId")
     private Long parentId;
+    @JsonProperty("postCount")
     private Integer postCount;
 
-    @Override
-    public static CategoryDTO toCategoryDTO(com.example.wordpressclone.domain.entities.CategoryEntity categoryEntity) {
+    public static CategoryDTO toCategoryDTO(CategoryEntity categoryEntity) {
         CategoryDTO dto = new CategoryDTO();
         dto.setId(categoryEntity.getId());
         dto.setName(categoryEntity.getName());
@@ -28,15 +34,14 @@ public class CategoryDTO implements CategoryMapper {
         return dto;
     }
 
-    @Override
-    public static com.example.wordpressclone.domain.entities.CategoryEntity fromCategoryDTO(CategoryDTO categoryDTO) {
-        return new com.example.wordpressclone.domain.entities.CategoryEntity(
-            categoryDTO.getId(),
-            categoryDTO.getName(),
-            categoryDTO.getSlug(),
-            categoryDTO.getDescription(),
-            categoryDTO.getParentId(),
-            categoryDTO.getPostCount()
-        );
+    public static CategoryEntity fromCategoryDTO(CategoryDTO categoryDTO) {
+        CategoryEntity entity = new CategoryEntity();
+        entity.setId(categoryDTO.getId());
+        entity.setName(categoryDTO.getName());
+        entity.setSlug(categoryDTO.getSlug());
+        entity.setDescription(categoryDTO.getDescription());
+        entity.setParentId(categoryDTO.getParentId());
+        entity.setPostCount(categoryDTO.getPostCount());
+        return entity;
     }
 }
