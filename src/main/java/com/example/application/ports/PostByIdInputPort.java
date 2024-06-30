@@ -2,17 +2,11 @@ package com.example.application.ports;
 
 import com.example.application.dtos.PostDetailsDTO;
 import com.example.domain.exceptions.PostNotFoundException;
+import java.util.List;
 
 /**
  * Input contract for fetching a post by its ID. This interface serves as the entry point
  * for the primary adapters to interact with the use case for fetching post details.
- * 
- * <p>Use this interface to initiate fetching a post by its ID from the primary adapter,
- * such as the PostController. It is crucial for implementing the core functionalities
- * described in the project's specifications.</p>
- *
- * @see PostDetailsDTO
- * @see PostNotFoundException
  */
 public interface PostByIdInputPort {
 
@@ -24,9 +18,6 @@ public interface PostByIdInputPort {
      * @param postId the ID of the post to retrieve
      * @return PostDetailsDTO containing the details of the post
      * @throws PostNotFoundException if the post cannot be found
-     * 
-     * <p>Implementations should handle PostNotFoundException to ensure that the error is managed
-     * gracefully, providing a clear message to the caller.</p>
      */
     PostDetailsDTO getPostById(Long postId) throws PostNotFoundException;
 
@@ -39,5 +30,5 @@ public interface PostByIdInputPort {
      * @param sort the sorting criteria (e.g., date, title)
      * @return a paginated list of posts sorted according to the specified criteria
      */
-    PostDetailsDTO getPostsPaginated(int page, int size, String sort);
+    List<PostDetailsDTO> getPostsPaginated(int page, int size, String sort);
 }

@@ -1,6 +1,7 @@
 package com.example.domain.ports;
 
 import java.util.List;
+import java.time.LocalDate;
 import com.example.domain.value_objects.PostStatus;
 import lombok.Data;
 
@@ -29,19 +30,16 @@ public class PostListParameters {
     private List<Integer> tagsExclude = null;
     private boolean sticky = false;
 
-    // Validations
     public void validateOrderField(String order) {
         if (!order.equals("asc") && !order.equals("desc")) {
             throw new IllegalArgumentException("Invalid order: " + order);
         }
     }
 
-    // Date conversion
     public LocalDate parseDate(String dateString) {
         return LocalDate.parse(dateString);
     }
 
-    // Logging
     public void logDataProcessing(String data) {
         System.out.println("Processing data: " + data);
     }

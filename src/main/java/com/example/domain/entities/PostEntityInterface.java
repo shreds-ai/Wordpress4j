@@ -4,15 +4,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import com.example.domain.value_objects.PostStatus;
-import com.example.util.CommonUtils;
 import com.example.domain.PostDTO;
-import com.example.domain.PostEntity;
+import com.example.domain.value_objects.PostStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public interface PostEntityInterface {
-    Logger LOGGER = LoggerFactory.getLogger(PostEntityInterface.class);
+public interface PostEntity {
+    Logger LOGGER = LoggerFactory.getLogger(PostEntity.class);
 
     UUID getId();
     String getTitle();
@@ -30,16 +28,16 @@ public interface PostEntityInterface {
     List<Long> getCategoriesIds();
     List<Long> getTagsIds();
     Map<String, String> getLinks();
-    default PostDTO formatPostForResponse(PostEntityInterface post) {
+    default PostDTO formatPostForResponse(PostEntity post) {
         if (post == null) {
-            LOGGER.warn("PostEntityInterface.formatPostForResponse was called with null post");
+            LOGGER.warn("PostEntity.formatPostForResponse was called with null post");
             return null;
         }
         try {
             PostDTO dto = new PostDTO();
             dto.setId(post.getId());
-            dto.setTitle(renderHtmlForPost(post.getTitle()));
-            dto.setContent(renderHtmlForPost(post.getContent()));
+            dto.setTitle(com.example.util.CommonUtils.renderHtml(post.getTitle()));
+            dto.setContent(com.example.util.CommonUtils.renderHtml(post.getContent()));
             dto.setAuthorId(post.getAuthorId());
             dto.setStatus(post.getStatus());
             dto.setDate(post.getDate());
@@ -49,18 +47,14 @@ public interface PostEntityInterface {
             dto.setPingStatus(post.getPingStatus());
             dto.setSticky(post.isSticky());
             dto.setFeaturedMediaId(post.getFeaturedMediaId());
-            dto.setExcerpt(renderHtmlForPost(post.getExcerpt()));
+            dto.setExcerpt(com.example.util.CommonUtils.renderHtml(post.getExcerpt()));
             dto.setCategoriesIds(post.getCategoriesIds());
             dto.setTagsIds(post.getTagsIds());
             dto.setLinks(post.getLinks());
             return dto;
         } catch (Exception e) {
-            LOGGER.error("Error processing post in PostEntityInterface.formatPostForResponse", e);
+            LOGGER.error("Error processing post in PostEntity.formatPostForResponse", e);
             return null;
         }
-    }
-
-    static String renderHtmlForPost(String input) {
-        return CommonUtils.renderHtml(input);
     }
 }

@@ -29,9 +29,9 @@ public class PostByIdUseCaseImpl implements PostByIdInputPort {
             throw new IllegalArgumentException("Invalid post ID");
         }
         try {
-            Optional<PostDetailsDTO> postDetails = postRepositoryPort.findById(postId).map(this::mapToPostDetailsDTO);
+            Optional<PostEntity> postEntity = postRepositoryPort.findById(postId);
             logger.debug("Fetching post with ID: " + postId);
-            return postDetails.orElseThrow(() -> new PostNotFoundException("Post not found with ID: " + postId));
+            return postEntity.map(this::mapToPostDetailsDTO).orElseThrow(() -> new PostNotFoundException("Post not found with ID: " + postId));
         } catch (Exception e) {
             logger.error("Error retrieving post with ID: " + postId, e);
             throw new PostNotFoundException("Error retrieving post", e);

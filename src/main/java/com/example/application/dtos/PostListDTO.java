@@ -2,9 +2,11 @@ package com.example.application.dtos;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import lombok.Data;
 
+/**
+ * Data transfer object for the list of posts, used to transfer data between the primary adapter and the application layer.
+ */
 @Data
 public class PostListDTO {
 
@@ -14,7 +16,7 @@ public class PostListDTO {
         return posts;
     }
 
-    private void setPostList(List<PostDetailsDTO> posts) {
+    public void setPostList(List<PostDetailsDTO> posts) {
         this.posts = new ArrayList<>(posts);
     }
 
@@ -37,9 +39,7 @@ public class PostListDTO {
 
         public Builder addPost(PostDetailsDTO post) {
             if (post != null) {
-                List<PostDetailsDTO> newPosts = new ArrayList<>(this.posts);
-                newPosts.add(post);
-                return new Builder().posts(newPosts);
+                this.posts.add(post);
             }
             return this;
         }
@@ -56,25 +56,5 @@ public class PostListDTO {
             postListDTO.setPostList(this.posts);
             return postListDTO;
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PostListDTO that = (PostListDTO) o;
-        return Objects.equals(posts, that.posts);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(posts);
-    }
-
-    @Override
-    public String toString() {
-        return "PostListDTO{" +
-                "posts=" + posts +
-                '}';
     }
 }

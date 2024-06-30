@@ -1,8 +1,8 @@
 package com.example.application.services;
 
 import com.example.application.ports.PostListInputPort;
-import com.example.application.ports.PostListOutputPort;
 import com.example.application.dtos.PostListDTO;
+import com.example.application.dtos.PostDetailsDTO;
 import com.example.domain.ports.PostRepositoryPort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,24 +21,21 @@ public class PostListUseCaseImpl implements PostListInputPort {
 
     private static final Logger logger = LoggerFactory.getLogger(PostListUseCaseImpl.class);
     private final PostRepositoryPort postRepositoryPort;
-    private final PostListOutputPort postListOutputPort;
 
-    public PostListUseCaseImpl(PostRepositoryPort postRepositoryPort, PostListOutputPort postListOutputPort) {
-        this.postRepositoryPort = postRepositoryport;
-        this.postListOutputPort = postListOutputPort;
+    public PostListUseCaseImpl(PostRepositoryPort postRepositoryPort) {
+        this.postRepositoryPort = postRepositoryPort;
     }
 
     @Override
-    @Transactional(readonly = true)
+    @Transactional(readOnly = true)
     @Cacheable("posts")
     @PreAuthorize("hasRole('ADMIN')")
     public PostListDTO retrievePostList(int page, int size, String sortBy) {
         logger.debug("Fetching posts with page: {} size: {} sortBy: {}", page, size, sortBy);
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sortBy));
-        List<PostListDTO.PostDetailsDTO> posts = postRepositoryPort.findAll(pageable).stream()
-                .map(postListOutputPort::convertToDTO)
+        List<PostDetailsDTO> posts = postRepositoryPort.findAll(pageable).stream()
                 .collect(Collectors.toList());
         logger.debug("Posts retrieved successfully.");
-        return PostListDTO.builder().addPosts(posts).build();
+        return PostListDTO.builder().posts(posts).build();
     }
 }

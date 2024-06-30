@@ -1,7 +1,7 @@
 package com.example.infrastructure.repositories;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 import com.example.domain.ports.PostRepositoryPort;
@@ -12,18 +12,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.example.infrastructure.repositories.CustomPostRepository;
+import com.example.domain.exceptions.PostNotFoundException;
 import org.springframework.boot.actuate.audit.listener.AuditApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
 @Repository
 public class PostRepositoryImpl implements PostRepositoryPort {
 
-    private final JpaRepository<PostEntity, Long> postRepository;
+    private final CustomPostRepository postRepository;
     private static final Logger logger = LoggerFactory.getLogger(PostRepositoryImpl.class);
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
-    public PostRepositoryImpl(JpaRepository<PostEntity, Long> postRepository) {
+    public PostRepositoryImpl(CustomPostRepository postRepository) {
         this.postRepository = postRepository;
     }
 
@@ -36,7 +38,7 @@ public class PostRepositoryImpl implements PostRepositoryPort {
             return posts;
         } catch (DataAccessException e) {
             logger.error("Failed to retrieve posts", e);
-            throw new RuntimeException("Failed to retrieve posts", e);
+            throw new PostNotFoundException("Failed to retrieve posts", e);
         }
     }
 
@@ -49,7 +51,7 @@ public class PostRepositoryImpl implements PostRepositoryPort {
             return post;
         } catch (DataAccessException e) {
             logger.error("Failed to find post by ID", e);
-            throw new RuntimeException("Failed to find post by ID", e);
+            throw new PostNotFoundException("Failed to find post by ID", e);
         }
     }
 
@@ -62,7 +64,7 @@ public class PostRepositoryImpl implements PostRepositoryPort {
             return post;
         } catch (DataAccessException e) {
             logger.error("Failed to find post by slug", e);
-            throw new RuntimeException("Failed to find post by slug", e);
+            throw new PostNotFoundException("Failed to find post by slug", e);
         }
     }
 }

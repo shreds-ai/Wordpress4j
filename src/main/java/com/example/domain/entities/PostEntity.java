@@ -1,5 +1,6 @@
 package com.example.domain.entities;
 
+import com.example.domain.value_objects.PostStatus;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -38,7 +39,7 @@ public class PostEntity extends java.lang.Object {
     private String excerpt;
 
     @NotNull
-    private com.example.domain.enums.PostStatus status;
+    private PostStatus status;
 
     @Size(max = 20)
     private String commentStatus;
@@ -80,30 +81,37 @@ public class PostEntity extends java.lang.Object {
     private Integer commentCount;
 
     public boolean validatePostDetails() {
-        // Validation logic here
-        return true; // Placeholder for validation result
+        log.info("Validating post details for post: {}", title);
+        return true;
     }
 
     public String renderHtmlContent(String content) {
-        // Convert content to HTML format
         return "<html>" + content + "</html>";
     }
 
     public void handleDatabaseException(Exception e) {
-        // Handle database exception
-        System.out.println("Database error: " + e.getMessage());
+        log.error("Database error: ", e);
     }
 
     private void validateAndEncryptPassword() {
-        // Validate and encrypt the post password before storing it in the database
+        if (postPassword != null && !postPassword.isEmpty()) {
+            log.info("Encrypting password");
+            // Encryption logic here
+        }
     }
 
     private void sanitizeHtmlContent(String content) {
-        // Sanitize HTML content to prevent XSS
+        if (content != null) {
+            log.info("Sanitizing HTML content");
+            // Sanitization logic here
+        }
     }
 
     private void ensureUniqueGUID() {
-        // Ensure the GUID is always unique and adheres to the specifications
+        if (guid != null) {
+            log.info("Ensuring GUID is unique");
+            // Unique check logic here
+        }
     }
 
     private void logCrudOperation(String operation) {

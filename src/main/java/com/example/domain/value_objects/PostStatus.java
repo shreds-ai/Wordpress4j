@@ -16,12 +16,4 @@ public enum PostStatus {
     public String getDescription() {
         return description;
     }
-
-    public static PostStatus[] values() {
-        return PostStatus.values();
-    }
-
-    public static PostStatus valueOf(String name) {
-        return PostStatus.valueOf(name);
-    }
 }
