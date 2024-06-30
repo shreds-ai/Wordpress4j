@@ -2,6 +2,7 @@ package com.example.wordpressclone.domain.ports;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.io.IOException;
 
 /**
  * Interface for Gravatar URL generation services.
@@ -16,7 +17,7 @@ public interface GravatarServicePort {
      * @return the MD5 hash of the email
      * @throws IllegalArgumentException if email is null or empty
      */
-    String computeMd5Hash(String email);
+    String computeMd5Hash(String email) throws IllegalArgumentException;
 
     /**
      * Generates a Gravatar URL using the provided MD5 hash and the specified size.
@@ -25,7 +26,7 @@ public interface GravatarServicePort {
      * @return the generated Gravatar URL
      * @throws IllegalArgumentException if md5Hash is null or empty, or size is non-positive
      */
-    String generateGravatarUrl(String md5Hash, int size);
+    String generateGravatarUrl(String md5Hash, int size) throws IllegalArgumentException;
 
     /**
      * Validates the format of the email to ensure it adheres to standard email formatting rules.
@@ -33,7 +34,7 @@ public interface GravatarServicePort {
      * @return true if the email format is valid, false otherwise
      * @throws IllegalArgumentException if email is null or empty
      */
-    boolean validateEmailFormat(String email);
+    boolean validateEmailFormat(String email) throws IllegalArgumentException;
 
     /**
      * Handles exceptions that may occur during the generation of Gravatar URLs.

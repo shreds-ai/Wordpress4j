@@ -38,19 +38,19 @@ public class ApplicationException extends Exception {
 
     @Override
     public String getMessage() {
-        return message;
+        return super.getMessage();
     }
 
     @Override
     public Throwable getCause() {
-        return cause;
+        return super.getCause();
     }
 
     /**
      * Logs the stack trace of the exception to the system's error stream.
      */
     public void logStackTrace() {
-        this.printStackTrace(System.err);
+        super.printStackTrace(System.err);
     }
 
     @Override

@@ -12,8 +12,10 @@ import com.example.wordpressclone.application.dtos.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.swagger.annotations.*;
-import java.sql.SQLException;
-import org.springframework.security.ratelimiting.RateLimiter;
+import org.springframework.http.HttpStatus;
+import com.example.wordpressclone.domain.exceptions.UserNotFoundException;
+import com.example.wordpressclone.domain.exceptions.DatabaseTimeoutException;
+import com.google.common.util.concurrent.RateLimiter;
 
 @RestController
 @Api(value = "UserController", description = "Handles requests for user information")
@@ -38,9 +40,9 @@ public class UserController {
         try {
             List<UserDTO> users = userService.listUsers();
             return ResponseEntity.ok(users);
-        } catch (SQLException e) {
-            logger.error("Database access error", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error accessing user data");
+        } catch (DatabaseTimeoutException e) {
+            logger.error("Database timeout error", e);
+            return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body(null);
         } catch (Exception e) {
             logger.error("Internal server error", e);
             return ResponseEntity.internalServerError().build();
@@ -62,9 +64,9 @@ public class UserController {
         } catch (UserNotFoundException e) {
             logger.error("User not found for ID: " + id, e);
             return ResponseEntity.notFound().build();
-        } catch (SQLException e) {
-            logger.error("Database access error while retrieving user with ID: " + id, e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error accessing user data");
+        } catch (DatabaseTimeoutException e) {
+            logger.error("Database timeout error while retrieving user with ID: " + id, e);
+            return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body(null);
         } catch (Exception e) {
             logger.error("Internal server error while retrieving user with ID: " + id, e);
             return ResponseEntity.internalServerError().build();
