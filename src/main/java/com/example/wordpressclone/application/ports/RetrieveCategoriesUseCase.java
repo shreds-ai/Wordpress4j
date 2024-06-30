@@ -1,6 +1,8 @@
 package com.example.wordpressclone.application.ports;
 
 import com.example.wordpressclone.application.dtos.CategoryDTO;
+import com.example.wordpressclone.application.exceptions.DataAccessException;
+import com.example.wordpressclone.application.exceptions.DataNotFoundException;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 
