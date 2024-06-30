@@ -40,7 +40,7 @@ public class MediaItemValue {
      * Throws IllegalArgumentException if the URL format is not valid.
      */
     public void validateUrlFormat() {
-        if (!url.matches("^(https?|ftp):\/\/[\w.-]+(?:[\/:]\S*)?$")) {
+        if (!url.matches("^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w \-]*)*\/?$")) {
             throw new IllegalArgumentException("Invalid URL format");
         }
     }

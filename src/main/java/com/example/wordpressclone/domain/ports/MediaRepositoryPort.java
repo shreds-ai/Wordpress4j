@@ -22,9 +22,9 @@ public interface MediaRepositoryPort {
 
     /**
      * Find a single media item by its ID.
-     * @param id the ID of the media item
-     * @return an Optional containing the found MediaItemEntity or empty if not found
-     * @throws DataAccessException if there is an issue accessing the data
+     * @param id the identifier of the media item
+     * @return an Optional of MediaItemEntity if found, otherwise an empty Optional
+     * @throws DataAccessException if there is a database access error
      */
     Optional<MediaItemEntity> findMediaItemById(Long id) throws DataAccessException;
 }
