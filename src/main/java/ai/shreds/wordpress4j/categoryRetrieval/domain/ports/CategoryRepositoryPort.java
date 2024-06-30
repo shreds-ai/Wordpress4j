@@ -1,6 +1,6 @@
-package ai.shreds.wordpress4j.domain.ports;
+package ai.shreds.wordpress4j.categoryRetrieval.domain.ports;
 
-import ai.shreds.wordpress4j.domain.entities.CategoryEntity;
+import ai.shreds.wordpress4j.categoryRetrieval.domain.entities.CategoryEntity;
 import java.util.List;
 import java.util.Optional;
 

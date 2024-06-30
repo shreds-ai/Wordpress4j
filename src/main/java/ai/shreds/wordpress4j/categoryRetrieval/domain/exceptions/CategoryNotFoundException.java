@@ -1,4 +1,4 @@
-package ai.shreds.wordpress4j.domain.exceptions;
+package ai.shreds.wordpress4j.categoryRetrieval.domain.exceptions;
 
 import java.io.Serial;
 

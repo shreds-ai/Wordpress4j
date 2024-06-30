@@ -1,6 +1,6 @@
-package ai.shreds.wordpress4j.application.dtos;
+package ai.shreds.wordpress4j.categoryRetrieval.application.dtos;
 
-import ai.shreds.wordpress4j.domain.entities.CategoryEntity;
+import ai.shreds.wordpress4j.categoryRetrieval.domain.entities.CategoryEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
-package ai.shreds.wordpress4j.adapters.secondary;
+package ai.shreds.wordpress4j.categoryRetrieval.adapters.secondary;
 
-import ai.shreds.wordpress4j.domain.entities.CategoryEntity;
-import ai.shreds.wordpress4j.domain.ports.CategoryRepositoryPort;
+import ai.shreds.wordpress4j.categoryRetrieval.domain.entities.CategoryEntity;
+import ai.shreds.wordpress4j.categoryRetrieval.domain.ports.CategoryRepositoryPort;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

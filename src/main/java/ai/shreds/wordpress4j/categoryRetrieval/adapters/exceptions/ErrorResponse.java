@@ -1,4 +1,4 @@
-package ai.shreds.wordpress4j.adapters.exceptions;
+package ai.shreds.wordpress4j.categoryRetrieval.adapters.exceptions;
 
 import lombok.Getter;
 import lombok.Setter;

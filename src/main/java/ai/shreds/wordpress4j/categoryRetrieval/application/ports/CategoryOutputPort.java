@@ -1,6 +1,6 @@
-package ai.shreds.wordpress4j.application.ports;
+package ai.shreds.wordpress4j.categoryRetrieval.application.ports;
 
-import ai.shreds.wordpress4j.application.dtos.CategoryDTO;
+import ai.shreds.wordpress4j.categoryRetrieval.application.dtos.CategoryDTO;
 import java.util.List;
 
 /**

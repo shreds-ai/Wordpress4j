@@ -1,4 +1,4 @@
-package ai.shreds.wordpress4j.configurations;
+package ai.shreds.wordpress4j.categoryRetrieval.configurations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
