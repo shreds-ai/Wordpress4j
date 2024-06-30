@@ -5,7 +5,8 @@ import org.slf4j.LoggerFactory;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.regex.Matcher;
-import com.example.wordpressclone.adapters.exceptions.RecoverableException;
+import com.example.wordpressclone.domain.exceptions.RecoverableException;
+import com.example.wordpressclone.domain.exceptions.InvalidEmailException;
 import java.lang.IllegalArgumentException;
 
 public class ErrorHandlingUtils {
@@ -28,17 +29,4 @@ public class ErrorHandlingUtils {
         if (e instanceof RecoverableException) {
             logger.warn("Recoverable exception occurred: " + e.getMessage() + ", Timestamp: " + System.currentTimeMillis() + ", Thread: " + Thread.currentThread().getId(), e);
         } else {
-            logger.error("Non-recoverable exception occurred: " + e.getMessage() + ", Timestamp: " + System.currentTimeMillis() + ", Thread: " + Thread.currentThread().getId(), e);
-        }
-    }
-
-    public static void logErrorDetails(Exception e) {
-        logger.error("Error details: ", e);
-    }
-
-    public static void checkNotNull(Object obj, String message) {
-        if (obj == null) {
-            throw new IllegalArgumentException(message);
-        }
-    }
-}
+            logger.error("Non-recoverable exception occurred: " + e.getMessage() + \
