@@ -29,4 +29,17 @@ public class ErrorHandlingUtils {
         if (e instanceof RecoverableException) {
             logger.warn("Recoverable exception occurred: " + e.getMessage() + ", Timestamp: " + System.currentTimeMillis() + ", Thread: " + Thread.currentThread().getId(), e);
         } else {
-            logger.error("Non-recoverable exception occurred: " + e.getMessage() + \
+            logger.error("Non-recoverable exception occurred: " + e.getMessage() + ", Timestamp: " + System.currentTimeMillis() + ", Thread: " + Thread.currentThread().getId(), e);
+        }
+    }
+
+    public static void logErrorDetails(Exception e) {
+        logger.error("Error details: ", e);
+    } 
+
+    public static void checkNotNull(Object obj, String message) {
+        if (obj == null) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+}
