@@ -1,11 +1,11 @@
-package ai.shreds.wordpress4j.application.services;
+package ai.shreds.wordpress4j.categoryRetrieval.application.services;
 
-import ai.shreds.wordpress4j.application.exceptions.DataAccessException;
-import ai.shreds.wordpress4j.application.ports.CategoryOutputPort;
-import ai.shreds.wordpress4j.domain.ports.CategoryRepositoryPort;
-import ai.shreds.wordpress4j.application.dtos.CategoryDTO;
-import ai.shreds.wordpress4j.domain.entities.CategoryEntity;
-import ai.shreds.wordpress4j.domain.exceptions.CategoryNotFoundException;
+import ai.shreds.wordpress4j.categoryRetrieval.application.exceptions.DataAccessException;
+import ai.shreds.wordpress4j.categoryRetrieval.application.ports.CategoryOutputPort;
+import ai.shreds.wordpress4j.categoryRetrieval.domain.ports.CategoryRepositoryPort;
+import ai.shreds.wordpress4j.categoryRetrieval.application.dtos.CategoryDTO;
+import ai.shreds.wordpress4j.categoryRetrieval.domain.entities.CategoryEntity;
+import ai.shreds.wordpress4j.categoryRetrieval.domain.exceptions.CategoryNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

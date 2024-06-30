@@ -1,7 +1,7 @@
-package ai.shreds.wordpress4j.adapters.exceptions;
+package ai.shreds.wordpress4j.categoryRetrieval.adapters.exceptions;
 
-import ai.shreds.wordpress4j.application.exceptions.DataAccessException;
-import ai.shreds.wordpress4j.domain.exceptions.CategoryNotFoundException;
+import ai.shreds.wordpress4j.categoryRetrieval.application.exceptions.DataAccessException;
+import ai.shreds.wordpress4j.categoryRetrieval.domain.exceptions.CategoryNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;

@@ -1,4 +1,4 @@
-package ai.shreds.wordpress4j.domain.entities;
+package ai.shreds.wordpress4j.categoryRetrieval.domain.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
