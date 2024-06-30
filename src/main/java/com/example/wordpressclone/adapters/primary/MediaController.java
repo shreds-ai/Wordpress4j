@@ -15,8 +15,8 @@ import com.example.wordpressclone.application.dtos.MediaDTO;
 import com.example.wordpressclone.application.use_cases.FetchMediaUseCase;
 import com.example.wordpressclone.application.use_cases.FetchMediaByIdUseCase;
 import com.example.wordpressclone.domain.exceptions.MediaItemNotFoundException;
-import com.example.wordpressclone.domain.exceptions.DatabaseConnectionException;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 public class MediaController {
@@ -25,19 +25,20 @@ public class MediaController {
     private final FetchMediaUseCase fetchMediaUseCase;
     private final FetchMediaByIdUseCase fetchMediaByIdUseCase;
 
+    @Autowired
     public MediaController(FetchMediaUseCase fetchMediaUseCase, FetchMediaByIdUseCase fetchMediaByIdUseCase) {
         this.fetchMediaUseCase = fetchMediaUseCase;
         this.fetchMediaByIdUseCase = fetchMediaByIdUseCase;
     }
 
     @GetMapping("/media")
-    public ResponseEntity<List<MediaDTO>> getAllMediaItems() {
+    public ResponseEntity<List<MediaDTO>> getAllMediaItems() throws MediaItemNotFoundException {
         List<MediaDTO> mediaItems = fetchMediaUseCase.fetchAllMedia();
         return ResponseEntity.ok(mediaItems);
     }
 
     @GetMapping("/media/{id}")
-    public ResponseEntity<MediaDTO> getMediaItemById(@NotNull @Range(min = 1) @PathVariable Long id) {
+    public ResponseEntity<MediaDTO> getMediaItemById(@NotNull @Range(min = 1) @PathVariable Long id) throws MediaItemNotFoundException {
         MediaDTO mediaItem = fetchMediaByIdUseCase.execute(id);
         return ResponseEntity.ok(mediaItem);
     }
@@ -49,10 +50,4 @@ public class MediaController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Media item not found");
     }
 
-    @ExceptionHandler(DatabaseConnectionException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<String> handleDatabaseError(DatabaseConnectionException e) {
-        logger.error("Database connection error: ", e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Database connection error");
-    }
 }

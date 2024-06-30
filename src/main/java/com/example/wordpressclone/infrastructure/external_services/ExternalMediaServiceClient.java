@@ -31,16 +31,9 @@ public class ExternalMediaServiceClient implements ExternalMediaServicePort {
         this.restTemplate = restTemplate;
     }
 
-    /**
-     * Fetches media data from an external service.
-     *
-     * @param externalMediaId the ID of the media to fetch
-     * @return a list of MediaDTO objects or an empty list if none found
-     * @throws IllegalArgumentException if externalMediaId is null or empty
-     */
-    @HystrixCommand(fallbackMethod = 'handleExternalServiceDown')
-    public List<MediaDTO> fetchExternalMediaData(String externalMediaId) {
-        if (externalMediaId == null || externalMediaId.trim().isEmpty()) {
+    @HystrixCommand(fallbackMethod = "handleExternalServiceDown")
+    public List<MediaDTO> fetchExternalMediaData(String externalMediaId) throws SocketTimeoutException {
+        if (externalMediaId == null || externalMediaid.trim().isEmpty()) {
             throw new IllegalArgumentException("External media ID cannot be null or empty");
         }
         try {
@@ -55,18 +48,16 @@ public class ExternalMediaServiceClient implements ExternalMediaServicePort {
         } catch (HttpClientErrorException e) {
             logger.error("HTTP error encountered: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
             return Collections.emptyList();
+        } catch (SocketTimeoutException e) {
+            logger.error("Connection timed out: ", e);
+            throw e;
         } catch (Exception e) {
             logger.error("Failed to fetch media data: ", e);
             return Collections.emptyList();
         }
     }
 
-    /**
-     * Fallback method for fetchExternalMediaData when the external service is unavailable.
-     *
-     * @return an empty list indicating no data could be retrieved.
-     */
-    private List<MediaDTO> handleExternalServiceDown() {
+    private List<MediaDTO> handleExternalServiceDown(String externalMediaId) {
         logger.info("External media service is currently unavailable, returning empty list.");
         return Collections.emptyList();
     }
@@ -76,5 +67,10 @@ public class ExternalMediaServiceClient implements ExternalMediaServicePort {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         return headers;
+    }
+
+    private void handleRateLimiting() {
+        // Logic to handle rate limiting could include retry mechanisms or delay tactics
+        logger.info("Handling rate limiting for media data requests.");
     }
 }

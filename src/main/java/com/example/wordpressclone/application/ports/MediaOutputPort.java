@@ -25,7 +25,7 @@ public interface MediaOutputPort {
      * @param mediaItem the media DTO to be output
      * @return the formatted media DTO
      */
-    MediaDTO outputSingleMediaItem(@NotNull MediaDTO mediaItem);
+    MediaDTO outputSingleMediaImage(@NotNull MediaDTO mediaItem);
 
     /**
      * Handles errors during the output process of media items, ensuring that all exceptions are managed appropriately.

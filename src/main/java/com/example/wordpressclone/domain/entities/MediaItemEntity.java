@@ -8,11 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import jakarta.json.bind.annotation.JsonbDateFormat;
 
 /**
  * Represents a media item in the WordPress database.
@@ -30,8 +29,8 @@ public class MediaItemEntity implements Serializable {
     @Column(name = "post_author")
     private Long postAuthor;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "post_date")
+    @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private LocalDateTime postDate;
 
     @Column(name = "post_title")

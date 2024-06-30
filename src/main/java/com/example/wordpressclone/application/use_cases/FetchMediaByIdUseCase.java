@@ -2,7 +2,6 @@ package com.example.wordpressclone.application.use_cases;
 
 import com.example.wordpressclone.domain.services.MediaService;
 import com.example.wordpressclone.domain.exceptions.MediaItemNotFoundException;
-import com.example.wordpressclone.domain.exceptions.DatabaseConnectionException;
 import com.example.wordpressclone.application.dtos.MediaDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,7 @@ public class FetchMediaByIdUseCase {
         this.mediaService = mediaService;
     }
 
-    public MediaDTO execute(Long id) throws IllegalArgumentException, MediaItemNotFoundException, DatabaseConnectionException {
+    public MediaDTO execute(Long id) throws IllegalArgumentException, MediaItemNotFoundException {
         logger.info("Executing fetchMediaItemById with ID: {}", id);
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("Invalid ID: " + id);
@@ -32,9 +31,6 @@ public class FetchMediaByIdUseCase {
         } catch (MediaItemNotFoundException e) {
             logger.error("Media item not found for ID: {}", id, e);
             throw e;
-        } catch (DatabaseConnectionException e) {
-            logger.error("Database connection error occurred while fetching media item with ID: {}", id, e);
-            throw new DatabaseConnectionException("Database connection error.", e);
         } catch (Exception e) {
             logger.error("Unexpected error occurred while fetching media item with ID: {}", id, e);
             throw new RuntimeException("Unexpected error occurred.", e);
