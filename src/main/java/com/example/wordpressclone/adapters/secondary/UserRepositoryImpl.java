@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserRepositoryImpl implements UserRepositoryPort {
+public class UserRepositoryImpl implements UserRepository, UserRepositoryPort {
 
     @PersistenceContext
     private EntityManager entityManager;
