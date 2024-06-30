@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserRepositoryImpl implements UserRepository, UserRepositoryPort {
+public class UserRepositoryImpl implements UserRepositoryPort {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -38,11 +38,12 @@ public class UserRepositoryImpl implements UserRepository, UserRepositoryPort {
     }
 
     @Override
-    public boolean existsById(Long id) {
+    @Transactional(readOnly = true)
+    public List<UserMetaEntity> findUserMetadataByUserId(Long userId) {
         try {
-            return entityManager.createQuery("SELECT COUNT(u) > 0 FROM UserEntity u WHERE u.id = :id", Boolean.class)
-                .setParameter("id", id)
-                .getSingleResult();
+            return entityManager.createQuery("SELECT um FROM UserMetaEntity um WHERE um.userId = :userId", UserMetaEntity.class)
+                .setParameter("userId", userId)
+                .getResultList();
         } catch (PersistenceException e) {
             throw e;
         }
