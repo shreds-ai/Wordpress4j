@@ -41,11 +41,13 @@ public class UserService {
                             generateAvatarUrls(user.getUserEmail()),
                             userRepositoryPort.findUserMetadataByUserId(user.getId())
                                     .stream()
-                                    .collect(Collectors.toMap(UserMetaEntity::getMetaKey, UserMetaEntity::getMetaValue))
+                                    .collect(Collectors.groupingBy(UserMetaEntity::getMetaKey, Collectors.mapping(UserMetaEntity::getMetaValue, Collectors.toList())))
+                                    .entrySet().stream()
+                                    .map(entry -> Map.of(entry.getKey(), entry.getValue().get(0)))
+                                    .collect(Collectors.toList())
                     ))
                     .collect(Collectors.toList());
         } catch (Exception e) {
-            userRepositoryPort.handleDatabaseException(e);
             throw new DatabaseTimeoutException("Database timeout occurred while fetching users.");
         }
     }
@@ -72,7 +74,10 @@ public class UserService {
                 generateAvatarUrls(user.getUserEmail()),
                 userRepositoryPort.findUserMetadataByUserId(user.getId())
                         .stream()
-                        .collect(Collectors.toMap(UserMetaEntity::getMetaKey, UserMetaEntity::getMetaValue))
+                        .collect(Collectors.groupingBy(UserMetaEntity::getMetaKey, Collectors.mapping(UserMetaEntity::getMetaValue, Collectors.toList())))
+                        .entrySet().stream()
+                        .map(entry -> Map.of(entry.getKey(), entry.getValue().get(0)))
+                        .collect(Collectors.toList())
         );
     }
 

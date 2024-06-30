@@ -12,8 +12,10 @@ import com.example.wordpressclone.application.dtos.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import com.example.wordpressclone.domain.exceptions.UserNotFoundException;
+import com.example.wordpressclone.domain.exceptions.DataAccessException;
 import com.example.wordpressclone.domain.exceptions.DatabaseTimeoutException;
+import com.example.wordpressclone.domain.exceptions.UserNotFoundException;
+import com.example.wordpressclone.domain.exceptions.InvalidUserIdException;
 
 @RestController
 public class UserController {

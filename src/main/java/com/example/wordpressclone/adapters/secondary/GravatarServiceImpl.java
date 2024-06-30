@@ -1,12 +1,14 @@
 package com.example.wordpressclone.adapters.secondary;
 
+import com.example.wordpressclone.domain.exceptions.InvalidEmailException;
 import com.example.wordpressclone.domain.ports.GravatarServicePort;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
-import com.example.wordpressclone.adapters.secondary.InvalidEmailException;
 
 public class GravatarServiceImpl implements GravatarServicePort {
 
@@ -16,10 +18,25 @@ public class GravatarServiceImpl implements GravatarServicePort {
     @Override
     public String computeMd5Hash(String email) {
         if (email == null || !validateEmailFormat(email)) {
-            handleGravatarUrlException(new IllegalArgumentException("Invalid email format"));
+            handleGravatarUrlException(new InvalidEmailException("Invalid email format"));
             return null;
         }
-        return md5Cache.computeIfAbsent(email, k -> DigestUtils.md5Hex(k));
+        return md5Cache.computeIfAbsent(email, k -> computeMD5HashUsingMessageDigest(k));
+    }
+
+    private String computeMD5HashUsingMessageDigest(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(input.getBytes());
+            BigInteger no = new BigInteger(1, messageDigest);
+            String hashtext = no.toString(16);
+            while (hashtext.length() < 32) {
+                hashtext = '0' + hashtext;
+            }
+            return hashtext;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
