@@ -1,9 +1,9 @@
 package com.example.wordpressclone.application.dtos;
 
 import com.example.wordpressclone.domain.entities.UserEntity;
-import lombok.Data;
 import java.util.List;
 import java.util.Map;
+import lombok.Data;
 
 @Data
 public class UserResponseDTO {
@@ -42,7 +42,7 @@ public class UserResponseDTO {
         return dto;
     }
 
-    private Map<String, String> generateGravatarUrls(String email) {
+    private static Map<String, String> generateGravatarUrls(String email) {
         if (email == null || !email.contains("@")) {
             return Map.of("24", "default_url_24", "48", "default_url_48", "96", "default_url_96");
         }
@@ -53,11 +53,10 @@ public class UserResponseDTO {
         );
     }
 
-    private List<Map<String, String>> mapUserMeta(List<Map<String, String>> meta) {
+    private static List<Map<String, String>> mapUserMeta(List<Map<String, String>> meta) {
         if (meta == null || meta.isEmpty()) {
             throw new IllegalArgumentException("Metadata cannot be null or empty");
         }
-        // Placeholder for actual metadata mapping logic
         return meta;
     }
 

@@ -1,11 +1,18 @@
 package com.example.wordpressclone.domain.services;
 
-import com.example.wordpressclone.domain.entities.UserDTO;
+import com.example.wordpressclone.application.dtos.UserDTO;
+import com.example.wordpressclone.domain.entities.UserEntity;
+import com.example.wordpressclone.domain.entities.UserMetaEntity;
+import com.example.wordpressclone.domain.exceptions.UserNotFoundException;
+import com.example.wordpressclone.domain.exceptions.InvalidUserIdException;
+import com.example.wordpressclone.domain.exceptions.DatabaseTimeoutException;
 import com.example.wordpressclone.domain.ports.GravatarServicePort;
 import com.example.wordpressclone.domain.ports.UserRepositoryPort;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -15,7 +22,7 @@ public class UserService {
     private final UserRepositoryPort userRepositoryPort;
     private final GravatarServicePort gravatarServicePort;
 
-    public UserService(UserRepositoryPort userRepositoryPort, GravatarServicePort gravatarService,Port) {
+    public UserService(UserRepositoryPort userRepositoryPort, GravatarServicePort gravatarServicePort) {
         this.userRepositoryPort = userRepositoryPort;
         this.gravatarServicePort = gravatarServicePort;
     }

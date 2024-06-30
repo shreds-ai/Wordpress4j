@@ -2,7 +2,6 @@ package com.example.wordpressclone.domain.ports;
 
 import com.example.wordpressclone.domain.entities.UserEntity;
 import com.example.wordpressclone.domain.entities.UserMetaEntity;
-
 import java.util.List;
 import java.util.Optional;
 import org.springframework.dao.DataAccessException;

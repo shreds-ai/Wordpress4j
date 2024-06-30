@@ -13,6 +13,10 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.dao.DataAccessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.List;
+import com.example.wordpressclone.domain.exceptions.DatabaseTimeoutException;
+import com.example.wordpressclone.domain.exceptions.UserNotFoundException;
+import com.example.wordpressclone.domain.exceptions.InvalidUserIdException;
 
 @RestController
 @RequestMapping("/users")
@@ -31,12 +35,12 @@ public class UserAdapter {
         try {
             List<UserDTO> users = userService.listUsers();
             return ResponseEntity.ok(users);
-        } catch (DataAccessException e) {
+        } catch (DataAccessException | DatabaseTimeoutException e) {
             logger.error("Database error: ", e);
-            return ResponseEntity.internalServerError().body("Database error: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
         } catch (Exception e) {
             logger.error("Unexpected error: ", e);
-            return ResponseEntity.internalServerError().body("Unexpected error: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -45,15 +49,15 @@ public class UserAdapter {
         try {
             UserDTO user = userService.getUserById(id);
             return ResponseEntity.ok(user);
-        } catch (IllegalArgumentException e) {
-            logger.error("Invalid ID: ", e);
-            return ResponseEntity.badRequest().body("Invalid ID: " + e.getMessage());
-        } catch (DataAccessException e) {
+        } catch (InvalidUserIdException | UserNotFoundException e) {
+            logger.error("User not found or invalid ID: ", e);
+            return ResponseEntity.badRequest().build();
+        } catch (DataAccessException | DatabaseTimeoutException e) {
             logger.error("Database error: ", e);
-            return ResponseEntity.internalServerError().body("Database error: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
         } catch (Exception e) {
-            logger.error("User not found: ", e);
-            return ResponseEntity.notFound().body("User not found: " + e.getMessage());
+            logger.error("Unexpected error: ", e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

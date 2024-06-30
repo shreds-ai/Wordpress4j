@@ -32,7 +32,14 @@ public class UserValue {
         if (displayName == null || displayName.isEmpty()) {
             return "";
         }
-        return Character.toUpperCase(displayName.charAt(0)) + displayName.substring(1).toLowerCase();
+        StringBuilder newName = new StringBuilder();
+        String[] words = displayName.split(" ");
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                newName.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1).toLowerCase()).append(" ");
+            }
+        }
+        return newName.toString().trim();
     }
 
     public String standardizeEmailFormat(String email) {

@@ -1,14 +1,16 @@
 package com.example.wordpressclone.util;
 
 import org.slf4j.Logger;
-import com.example.wordpressclone.logging.CentralizedLogger;
+import org.slf4j.LoggerFactory;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.regex.Matcher;
+import com.example.wordpressclone.adapters.exceptions.RecoverableException;
+import java.lang.IllegalArgumentException;
 
 public class ErrorHandlingUtils {
 
-    private static final Logger logger = CentralizedLogger.getLogger(ErrorHandlingUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(ErrorHandlingUtils.class);
 
     public static boolean validateEmail(String email) {
         String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
@@ -26,4 +28,17 @@ public class ErrorHandlingUtils {
         if (e instanceof RecoverableException) {
             logger.warn("Recoverable exception occurred: " + e.getMessage() + ", Timestamp: " + System.currentTimeMillis() + ", Thread: " + Thread.currentThread().getId(), e);
         } else {
-            logger.error("Non-recoverable exception occurred: " + e.getMessage() + \
+            logger.error("Non-recoverable exception occurred: " + e.getMessage() + ", Timestamp: " + System.currentTimeMillis() + ", Thread: " + Thread.currentThread().getId(), e);
+        }
+    }
+
+    public static void logErrorDetails(Exception e) {
+        logger.error("Error details: ", e);
+    }
+
+    public static void checkNotNull(Object obj, String message) {
+        if (obj == null) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+}

@@ -9,6 +9,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.Map;
+import java.util.ArrayList;
+import com.example.wordpressclone.application.dtos.UserDTO;
 
 /**
  * Represents the User entity correlating to the 'wp_users' table in the WordPress database.

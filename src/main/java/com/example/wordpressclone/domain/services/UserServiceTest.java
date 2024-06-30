@@ -1,6 +1,11 @@
 package com.example.wordpressclone.domain.services;
 
-import com.example.wordpressclone.domain.entities.UserDTO;
+import com.example.wordpressclone.application.dtos.UserDTO;
+import com.example.wordpressclone.domain.entities.UserEntity;
+import com.example.wordpressclone.domain.exceptions.UserNotFoundException;
+import com.example.wordpressclone.domain.exceptions.DatabaseTimeoutException;
+import com.example.wordpressclone.domain.exceptions.NetworkErrorException;
+import com.example.wordpressclone.domain.exceptions.ServiceUnavailableException;
 import com.example.wordpressclone.domain.ports.GravatarServicePort;
 import com.example.wordpressclone.domain.ports.UserRepositoryPort;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,4 +60,71 @@ public class UserServiceTest {
     @DisplayName("Test User Not Found")
     public void testUserNotFound() {
         Long userId = 999L;
-        Mockito.when userRepo... (truncated for brevity)
+        Mockito.when(userRepositoryPortMock.findUserById(userId)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(UserNotFoundException.class, () -> {
+            userService.getUserById(userId);
+        });
+
+        assertTrue(exception instanceof UserNotFoundException);
+    }
+
+    @Test
+    @DisplayName("Test Gravatar Url Generation")
+    public void testGravatarUrlGeneration() {
+        String email = "test@example.com";
+        String expectedUrl = "http://gravatar.com/avatar/example?s=24";
+        Mockito.when(gravatarServicePortMock.validateEmailFormat(email)).thenReturn(true);
+        Mockito.when(gravatarServicePortMock.generateGravatarUrl(Mockito.anyString(), Mockito.eq(24))).thenReturn(expectedUrl);
+
+        String actualUrl = userService.generateAvatarUrls(email);
+
+        assertEquals(expectedUrl, actualUrl);
+    }
+
+    @Test
+    @DisplayName("Test UserService Exception Handling")
+    public void testUserServiceExceptionHandling() {
+        Mockito.doThrow(new DatabaseTimeoutException("Database error")).when(userRepositoryPortMock).findAllUsers();
+
+        Exception exception = assertThrows(DatabaseTimeoutException.class, () -> {
+            userService.listUsers();
+        });
+
+        assertTrue(exception instanceof DatabaseTimeoutException);
+    }
+
+    @Test
+    @DisplayName("Test Empty User Results")
+    public void testEmptyUser Results() {
+        Mockito.when(userRepositoryPortMock.findAllUsers()).thenReturn(Collections.emptyList());
+
+        List<UserDTO> actualUsers = userService.listUsers();
+
+        assertTrue(actualUsers.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Test Database Network Error Handling")
+    public void testDatabaseNetworkErrorHandling() {
+        Mockito.doThrow(new NetworkErrorException("Network error")).when(userRepositoryPortMock).findAllUsers();
+
+        Exception exception = assertThrows(NetworkErrorException.class, () -> {
+            userService.listUsers();
+        });
+
+        assertTrue(exception instanceof NetworkErrorException);
+    }
+
+    @Test
+    @DisplayName("Test Gravatar Service Unavailability")
+    public void testGravatarServiceUnavailability() {
+        Mockito.doThrow(new ServiceUnavailableException("Service unavailable")).when(gravatarServicePortMock).generateGravatarUrl(Mockito.anyString(), Mockito.anyInt());
+
+        Exception exception = assertThrows(ServiceUnavailableException.class, () -> {
+            userService.generateAvatarUrls("test@example.com");
+        });
+
+        assertTrue(exception instanceof ServiceUnavailableException);
+    }
+}
