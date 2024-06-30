@@ -1,14 +1,11 @@
 package ai.shreds.wordpress4j.categoryRetrieval.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -30,15 +27,18 @@ public class CategoryEntity {
     @JsonProperty("slug")
     private String slug;
 
-    @Column(name = "description")
-    @JsonProperty("description")
-    private String description;
+    @Column(name = "term_group")
+    @JsonProperty("term_group")
+    private String termGroup;
 
-    @Column(name = "parent")
-    @JsonProperty("parentId")
-    private Long parentId;
+    @OneToMany
+    @JoinColumn(name = "term_id", referencedColumnName = "term_id")
+    @JsonProperty("termTaxonomy")
+    private Set<TermTaxonomyEntity> termTaxonomy;
 
-    @Column(name = "count")
-    @JsonProperty("postCount")
-    private int postCount;
+    @OneToMany
+    @JoinColumn(name = "term_id", referencedColumnName = "term_id")
+    @JsonProperty("termMeta")
+    private Set<TermMetaEntity> termMeta;
+
 }

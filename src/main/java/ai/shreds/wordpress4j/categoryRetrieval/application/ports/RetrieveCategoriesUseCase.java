@@ -1,11 +1,11 @@
 package ai.shreds.wordpress4j.categoryRetrieval.application.ports;
 
+import ai.shreds.wordpress4j.categoryRetrieval.application.dtos.CategoryDTO;
 import ai.shreds.wordpress4j.categoryRetrieval.application.exceptions.DataAccessException;
 import ai.shreds.wordpress4j.categoryRetrieval.application.exceptions.DataNotFoundException;
-import ai.shreds.wordpress4j.categoryRetrieval.application.dtos.CategoryDTO;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
-import javax.validation.constraints.NotNull;
 
 /**
  * Defines the input port for use cases related to retrieving categories.

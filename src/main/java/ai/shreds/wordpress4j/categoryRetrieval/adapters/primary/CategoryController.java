@@ -23,13 +23,13 @@ public class CategoryController {
         this.categoryApplicationService = categoryApplicationService;
     }
 
-    @GetMapping("/categories/all")
+    @GetMapping("/categories")
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         logger.info("Fetching all categories");
         return ResponseEntity.ok(categoryApplicationService.retrieveAllCategories());
     }
 
-    @GetMapping("/categories/id/{id}")
+    @GetMapping("/categories/{id}")
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
         logger.info("Fetching category by ID: {}", id);
         return ResponseEntity.ok(categoryApplicationService.retrieveCategoryById(id));
