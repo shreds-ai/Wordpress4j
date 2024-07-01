@@ -1,8 +1,8 @@
 package com.example.domain.ports;
 
-import java.util.List;
-import java.time.LocalDate;
 import com.example.domain.value_objects.PostStatus;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -21,7 +21,7 @@ public class PostListParameters {
     private List<Integer> include = null;
     private int offset = 0;
     private String order = "desc";
-    private String orderBy = "date";
+    private String orderBy = "postDate";
     private List<String> slug = null;
     private PostStatus status = PostStatus.PUBLISH;
     private List<Integer> categories = null;

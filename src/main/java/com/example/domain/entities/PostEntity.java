@@ -1,120 +1,180 @@
 package com.example.domain.entities;
 
-import com.example.domain.value_objects.PostStatus;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.hibernate.annotations.ColumnDefault;
 
-@Entity
-@Table(name = "wp_posts")
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
-public class PostEntity extends java.lang.Object {
-    private static final Logger log = LoggerFactory.getLogger(PostEntity.class);
-
+@Entity
+@Table(name = "wp_posts", schema = "wordpress")
+public class PostEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
     private Long id;
 
     @NotNull
-    private Long author;
-
-    @Size(max = 200)
-    @NotNull
-    private String title;
-
-    private String content;
-
-    private String excerpt;
+    @ColumnDefault("'0000-00-00 00:00:00'")
+    @Column(name = "post_date", nullable = false)
+    private Instant postDate;
 
     @NotNull
-    private PostStatus status;
+    @ColumnDefault("'0000-00-00 00:00:00'")
+    @Column(name = "post_date_gmt", nullable = false)
+    private Instant postDateGmt;
+
+    @NotNull
+    @Lob
+    @Column(name = "post_content", nullable = false)
+    private String postContent;
+
+    @NotNull
+    @Lob
+    @Column(name = "post_title", nullable = false)
+    private String postTitle;
+
+    @NotNull
+    @Lob
+    @Column(name = "post_excerpt", nullable = false)
+    private String postExcerpt;
 
     @Size(max = 20)
+    @NotNull
+    @ColumnDefault("'publish'")
+    @Column(name = "post_status", nullable = false, length = 20)
+    private String postStatus;
+
+    @Size(max = 20)
+    @NotNull
+    @ColumnDefault("'open'")
+    @Column(name = "comment_status", nullable = false, length = 20)
     private String commentStatus;
 
     @Size(max = 20)
+    @NotNull
+    @ColumnDefault("'open'")
+    @Column(name = "ping_status", nullable = false, length = 20)
     private String pingStatus;
 
+    @Size(max = 255)
+    @NotNull
+    @ColumnDefault("''")
+    @Column(name = "post_password", nullable = false)
     private String postPassword;
 
     @Size(max = 200)
+    @NotNull
+    @ColumnDefault("''")
+    @Column(name = "post_name", nullable = false, length = 200)
     private String postName;
 
-    private List<String> toPing;
+    @NotNull
+    @Lob
+    @Column(name = "to_ping", nullable = false)
+    private String toPing;
 
-    private List<String> pinged;
+    @NotNull
+    @Lob
+    @Column(name = "pinged", nullable = false)
+    private String pinged;
 
-    private LocalDateTime postDate;
+    @NotNull
+    @ColumnDefault("'0000-00-00 00:00:00'")
+    @Column(name = "post_modified", nullable = false)
+    private Instant postModified;
 
-    private LocalDateTime postModifiedDate;
+    @NotNull
+    @ColumnDefault("'0000-00-00 00:00:00'")
+    @Column(name = "post_modified_gmt", nullable = false)
+    private Instant postModifiedGmt;
 
-    private ZonedDateTime postDateGmt;
-
-    private ZonedDateTime postModifiedDateGmt;
-
+    @NotNull
+    @Lob
+    @Column(name = "post_content_filtered", nullable = false)
     private String postContentFiltered;
 
+    @NotNull
+    @ColumnDefault("'0'")
+    @Column(name = "post_parent", nullable = false)
     private Long postParent;
 
+    @Size(max = 255)
+    @NotNull
+    @ColumnDefault("''")
+    @Column(name = "guid", nullable = false)
     private String guid;
 
+    @NotNull
+    @ColumnDefault("0")
+    @Column(name = "menu_order", nullable = false)
     private Integer menuOrder;
 
     @Size(max = 20)
+    @NotNull
+    @ColumnDefault("'post'")
+    @Column(name = "post_type", nullable = false, length = 20)
     private String postType;
 
     @Size(max = 100)
+    @NotNull
+    @ColumnDefault("''")
+    @Column(name = "post_mime_type", nullable = false, length = 100)
     private String postMimeType;
 
-    private Integer commentCount;
+    @NotNull
+    @ColumnDefault("0")
+    @Column(name = "comment_count", nullable = false)
+    private Long commentCount;
 
-    public boolean validatePostDetails() {
-        log.info("Validating post details for post: {}", title);
-        return true;
-    }
 
-    public String renderHtmlContent(String content) {
-        return "<html>" + content + "</html>";
-    }
+    @OneToMany(mappedBy = "post")
+    private List<CommentEntity> comments =  new ArrayList<>();
 
-    public void handleDatabaseException(Exception e) {
-        log.error("Database error: ", e);
-    }
+    @OneToMany(mappedBy = "post")
+    private List<PostmetaEntity> postMeta =  new ArrayList<>();
 
-    private void validateAndEncryptPassword() {
-        if (postPassword != null && !postPassword.isEmpty()) {
-            log.info("Encrypting password");
-            // Encryption logic here
-        }
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "wp_term_relationships",
+            joinColumns = @JoinColumn(name = "object_id"),
+            inverseJoinColumns = @JoinColumn(name = "term_taxonomy_id")
+    )
+    private List<TermTaxonomyEntity> termTaxonomies = new ArrayList<>();
 
-    private void sanitizeHtmlContent(String content) {
-        if (content != null) {
-            log.info("Sanitizing HTML content");
-            // Sanitization logic here
-        }
-    }
+    @ManyToOne
+    @JoinColumn(name = "post_author")
+    private UserEntity postAuthor;
 
-    private void ensureUniqueGUID() {
-        if (guid != null) {
-            log.info("Ensuring GUID is unique");
-            // Unique check logic here
-        }
-    }
+    @Transient
+    private List<TermEntity> categories = new ArrayList<>();
 
-    private void logCrudOperation(String operation) {
-        log.info("CRUD Operation: {}", operation);
-    }
+    @Transient
+    private List<TermEntity> tags = new ArrayList<>();
+
+    @Transient
+    private String authorName;
+
+    @Transient
+    private String guidRendered;
+
+    @Transient
+    private String titleRendered;
+
+    @Transient
+    private String contentRendered;
+
+    @Transient
+    private String excerptRendered;
+
+    @Transient
+    private Long featuredMedia;
+
 }

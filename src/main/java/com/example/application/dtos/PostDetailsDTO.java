@@ -1,73 +1,123 @@
 package com.example.application.dtos;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.example.domain.exceptions.DataRetrievalException;
-import com.example.domain.value_objects.PostListFilter;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * Data transfer object for detailed post information, used to transfer data between the primary adapter and the application layer.
  *
  * @author Data Transfer Object
  */
+
 @Data
+@NoArgsConstructor
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class PostDetailsDTO {
-
-    private static final Logger logger = LoggerFactory.getLogger(PostDetailsDTO.class);
-
     private Long id;
-    private LocalDateTime date;
-    private LocalDateTime dateGmt;
-    private String guid;
-    private String rendered;
-    private LocalDateTime modified;
-    private LocalDateTime modifiedGmt;
+    private String date;
+    private String dateGmt;
+    private RenderedField guid;
+    private String modified;
+    private String modifiedGmt;
     private String slug;
     private String status;
     private String type;
     private String link;
-    private String title;
-    private String content;
-    private String excerpt;
+    private RenderedField title;
+    private ContentField content;
+    private ExcerptField excerpt;
     private Long author;
     private Long featuredMedia;
     private String commentStatus;
     private String pingStatus;
-    private boolean sticky;
+    private Boolean sticky;
     private String template;
     private String format;
-    private Map<String, String> meta;
+    private MetaField meta;
     private List<Long> categories;
     private List<Long> tags;
-    private Map<String, List<Map<String, String>>> links;
-    private int version;
+    private LinksField _links;
 
-    /**
-     * Validates the post details to ensure all required fields are present and correct before any CRUD operation.
-     * @return true if validation passes, otherwise throws a specific RuntimeException with a detailed message
-     */
-    public boolean validatePostDetails() {
-        if (this.id == null || this.date == null || this.title == null || this.title.isEmpty()) {
-            logger.error("Validation failed for PostDetails: {}", this);
-            throw new DataRetrievalException("Validation error: Missing required fields or incorrect data.");
+    @Data
+    @NoArgsConstructor
+    public static class RenderedField {
+        private String rendered;
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class ContentField {
+        private String rendered;
+        private Boolean protectedContent = false;
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class ExcerptField {
+        private String rendered;
+        private Boolean protectedContent = false;
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class MetaField {
+        private String footnotes = "";
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class LinksField {
+        private List<LinkField> self;
+        private List<LinkField> collection;
+        private List<LinkField> about;
+        private List<LinkField> author;
+        private List<LinkField> replies;
+        private List<VersionHistoryField> versionHistory;
+        private List<PredecessorVersionField> predecessorVersion;
+        private List<LinkField> wpFeaturedmedia;
+        private List<LinkField> wpAttachment;
+        private List<TermField> wpTerm;
+        private List<CuriesField> curies;
+
+        @Data
+        @NoArgsConstructor
+        public static class LinkField {
+            private String href;
+            private Boolean embeddable;
         }
-        return true;
-    }
 
-    /**
-     * Handles concurrent updates to the post details, ensuring data consistency using version field.
-     * @param postDetails The post details to be updated.
-     */
-    public void handleConcurrentUpdates(PostDetailsDTO postDetails) {
-        logger.info("Handling concurrent update for PostDetails: Original {}, New {}", this, postDetails);
-        // Logic to handle concurrent updates, e.g., compare version numbers
-    }
+        @Data
+        @NoArgsConstructor
+        public static class VersionHistoryField {
+            private Integer count;
+            private String href;
+        }
 
-    public PostListFilter createFilter() {
-        return new PostListFilter();
+        @Data
+        @NoArgsConstructor
+        public static class PredecessorVersionField {
+            private Long id;
+            private String href;
+        }
+
+        @Data
+        @NoArgsConstructor
+        public static class TermField {
+            private String taxonomy;
+            private Boolean embeddable;
+            private String href;
+        }
+
+        @Data
+        @NoArgsConstructor
+        public static class CuriesField {
+            private String name;
+            private String href;
+            private Boolean templated;
+        }
     }
 }

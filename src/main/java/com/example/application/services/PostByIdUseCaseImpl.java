@@ -1,21 +1,30 @@
 package com.example.application.services;
 
-import com.example.application.ports.PostByIdInputPort;
 import com.example.application.dtos.PostDetailsDTO;
-import com.example.domain.ports.PostRepositoryPort;
+import com.example.application.mappers.PostDetailsMapper;
+import com.example.application.use_cases.PostByIdUseCase;
+import com.example.domain.entities.PostEntity;
 import com.example.domain.exceptions.PostNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.cache.annotation.Cacheable;
-import java.util.Optional;
+import com.example.domain.ports.PostRepositoryPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.Optional;
 
 @Service
-public class PostByIdUseCaseImpl implements PostByIdInputPort {
-
-    private final PostRepositoryPort postRepositoryPort;
+@Validated
+public class PostByIdUseCaseImpl implements PostByIdUseCase {
     private static final Logger logger = LoggerFactory.getLogger(PostByIdUseCaseImpl.class);
+    private final PostRepositoryPort postRepositoryPort;
+
+    @Value("${application.base-url}")
+    private String baseUrl;
+
 
     public PostByIdUseCaseImpl(PostRepositoryPort postRepositoryPort) {
         this.postRepositoryPort = postRepositoryPort;
@@ -31,41 +40,11 @@ public class PostByIdUseCaseImpl implements PostByIdInputPort {
         try {
             Optional<PostEntity> postEntity = postRepositoryPort.findById(postId);
             logger.debug("Fetching post with ID: " + postId);
-            return postEntity.map(this::mapToPostDetailsDTO).orElseThrow(() -> new PostNotFoundException("Post not found with ID: " + postId));
-        } catch (Exception e) {
+            return postEntity.map(pe -> PostDetailsMapper.toDTO(postEntity.get(), baseUrl)).orElseThrow(() -> new PostNotFoundException("Post not found with ID: " + postId));} catch (Exception e) {
             logger.error("Error retrieving post with ID: " + postId, e);
             throw new PostNotFoundException("Error retrieving post", e);
         }
     }
 
-    private PostDetailsDTO mapToPostDetailsDTO(PostEntity postEntity) {
-        return new PostDetailsDTO(
-            postEntity.getId(),
-            postEntity.getDate(),
-            postEntity.getDateGmt(),
-            postEntity.getGuid(),
-            postEntity.getRendered(),
-            postEntity.getModified(),
-            postEntity.getModifiedGmt(),
-            postEntity.getSlug(),
-            postEntity.getStatus(),
-            postEntity.getType(),
-            postEntity.getLink(),
-            postEntity.getTitle(),
-            postEntity.getContent(),
-            postEntity.getExcerpt(),
-            postEntity.getAuthor(),
-            postEntity.getFeaturedMedia(),
-            postEntity.getCommentStatus(),
-            postEntity.getPingStatus(),
-            postEntity.isSticky(),
-            postEntity.getTemplate(),
-            postEntity.getFormat(),
-            postEntity.getMeta(),
-            postEntity.getCategories(),
-            postEntity.getTags(),
-            postEntity.getLinks(),
-            postEntity.getVersion()
-        );
-    }
+
 }

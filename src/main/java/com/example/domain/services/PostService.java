@@ -1,48 +1,41 @@
 package com.example.domain.services;
 
-import com.example.application.dtos.PostDetailsDTO;
-import com.example.application.dtos.PostListDTO;
-import com.example.domain.exceptions.PostNotFoundException;
-import com.example.domain.value_objects.PostListFilter;
 import com.example.domain.entities.PostEntity;
+import com.example.domain.exceptions.PostNotFoundException;
+import com.example.domain.ports.PostListParameters;
+import com.example.domain.ports.PostRepositoryPort;
+import com.example.infrastructure.repositories.CustomPostRepository;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Optional;
 
 /**
- * Interface for post services that handle data retrieval and transformation for posts.
+ * Service for post services that handle data retrieval and transformation for posts,
+ * implementing the PostRepositoryPort interface.
  */
-public interface PostService {
 
-    /**
-     * Finds a post by its ID.
-     * @param id The ID of the post to retrieve.
-     * @return PostDetailsDTO containing post details.
-     * @throws PostNotFoundException if the post is not found.
-     */
-    PostDetailsDTO findById(Long id) throws PostNotFoundException;
+@Service
+public class PostService implements PostRepositoryPort {
+    private final CustomPostRepository customPostRepository;
 
-    /**
-     * Finds a post by its slug.
-     * @param slug The slug of the post.
-     * @return PostDetailsDTO containing post details.
-     * @throws PostNotFoundException if the post is not found.
-     */
-    PostDetailsDTO findBySlug(String slug) throws PostNotFoundException;
+    public PostService(CustomPostRepository customPostRepository) {
+        this.customPostRepository = customPostRepository;
+    }
 
-    /**
-     * Retrieves a list of posts based on filter criteria.
-     * @param filter The filtering criteria.
-     * @return List of PostListDTO representing the posts.
-     */
-    List<PostListDTO> findAll(PostListFilter filter);
+    @Override
+    public Optional<PostEntity> findById(Long id) throws PostNotFoundException {
+        return customPostRepository.findById(id);
+    }
 
-    /**
-     * Converts a PostEntity to a PostDetailsDTO.
-     * @param postEntity The entity to convert.
-     * @return The converted DTO.
-     */
-    PostDetailsDTO convertToDTO(PostEntity postEntity);
+    @Override
+    public Optional<PostEntity> findBySlug(String slug) throws PostNotFoundException {
+        return customPostRepository.findBySlug(slug);
+    }
 
-    /**
-     * Implementations should handle data access exceptions and entity not found scenarios gracefully.
-     */
+    @Override
+    public List<PostEntity> findAll(PostListParameters listParameters) {
+        return customPostRepository.findAll(listParameters);
+    }
+
 }

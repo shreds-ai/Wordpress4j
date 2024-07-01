@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url:  jdbc:mysql://localhost:3306/wordpress?allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: 12345
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+server:
+  port: 8087
+
+application:
+  base-url: http://localhost:8087
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

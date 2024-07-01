@@ -1,41 +1,32 @@
 package com.example.application.services;
 
-import com.example.application.ports.PostListInputPort;
-import com.example.application.dtos.PostListDTO;
 import com.example.application.dtos.PostDetailsDTO;
+import com.example.application.mappers.PostDetailsMapper;
+import com.example.application.use_cases.PostListUseCase;
+import com.example.domain.ports.PostListParameters;
 import com.example.domain.ports.PostRepositoryPort;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.cache.annotation.Cacheable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.access.prepost.PreAuthorize;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class PostListUseCaseImpl implements PostListInputPort {
-
-    private static final Logger logger = LoggerFactory.getLogger(PostListUseCaseImpl.class);
+public class PostListUseCaseImpl implements PostListUseCase {
     private final PostRepositoryPort postRepositoryPort;
+
+    @Value("${application.base-url}")
+    private String baseUrl;
+
 
     public PostListUseCaseImpl(PostRepositoryPort postRepositoryPort) {
         this.postRepositoryPort = postRepositoryPort;
     }
 
     @Override
-    @Transactional(readOnly = true)
-    @Cacheable("posts")
-    @PreAuthorize("hasRole('ADMIN')")
-    public PostListDTO retrievePostList(int page, int size, String sortBy) {
-        logger.debug("Fetching posts with page: {} size: {} sortBy: {}", page, size, sortBy);
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sortBy));
-        List<PostDetailsDTO> posts = postRepositoryPort.findAll(pageable).stream()
+    public List<PostDetailsDTO> fetchPosts(PostListParameters params) {
+        return postRepositoryPort.findAll(params).stream()
+                .map(postEntity -> PostDetailsMapper.toDTO(postEntity, baseUrl))
                 .collect(Collectors.toList());
-        logger.debug("Posts retrieved successfully.");
-        return PostListDTO.builder().posts(posts).build();
     }
 }

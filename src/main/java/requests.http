@@ -1,0 +1,14 @@
+GET http://localhost:8087/wp-json/wp/v2/posts
+Content-Type: application/json
+
+###
+
+GET /wp-json/wp/v2/posts/6 HTTP/1.1
+Host: localhost:8087
+Content-Type: application/json
+
+###
+
+GET /wp-json/wp/v2/posts/slug/tech-news-post HTTP/1.1
+Host: localhost:8087
+Content-Type: application/json
