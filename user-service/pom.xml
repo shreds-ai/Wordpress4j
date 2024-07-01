@@ -11,8 +11,8 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.example</groupId>
-    <artifactId>wordpressclone</artifactId>
+    <groupId>ai.shreds.wordpress4</groupId>
+    <artifactId>user-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 

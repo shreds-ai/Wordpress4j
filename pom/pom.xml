@@ -4,6 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>ai.shreds</groupId>
+    <artifactId>wordpress4j</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -17,6 +22,7 @@
         <module>../user-service</module>
         <module>../media-service</module>
         <module>../tag-service</module>
+        <module>../category-service</module>
 
 
     </modules>
