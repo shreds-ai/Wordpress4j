@@ -16,6 +16,7 @@
         <module>../post-service</module>
         <module>../user-service</module>
         <module>../media-service</module>
+        <module>../tag-service</module>
 
 
     </modules>
